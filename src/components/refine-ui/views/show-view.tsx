@@ -1,28 +1,22 @@
-"use client";
+'use client';
 
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren } from 'react';
 
-import { RefreshButton } from "@/components/refine-ui/buttons/refresh";
-import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import {
-  useBack,
-  useResourceParams,
-  useUserFriendlyName,
-} from "@refinedev/core";
-import { ArrowLeftIcon } from "lucide-react";
-import { EditButton } from "../buttons/edit";
+import { RefreshButton } from '@/components/refine-ui/buttons/refresh';
+import { Breadcrumb } from '@/components/refine-ui/layout/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import { useBack, useResourceParams, useUserFriendlyName } from '@refinedev/core';
+import { ArrowLeftIcon } from 'lucide-react';
+import { EditButton } from '../buttons/edit';
 
 type ShowViewProps = PropsWithChildren<{
   className?: string;
 }>;
 
 export function ShowView({ children, className }: ShowViewProps) {
-  return (
-    <div className={cn("flex flex-col", "gap-4", className)}>{children}</div>
-  );
+  return <div className={cn('flex flex-col', 'gap-4', className)}>{children}</div>;
 }
 
 type ShowViewHeaderProps = PropsWithChildren<{
@@ -51,51 +45,40 @@ export const ShowViewHeader = ({
 
   const title =
     titleFromProps ??
-    getUserFriendlyName(
-      resource?.meta?.label ?? identifier ?? resource?.name,
-      "singular"
-    );
+    getUserFriendlyName(resource?.meta?.label ?? identifier ?? resource?.name, 'singular');
 
   return (
-    <div className={cn("flex flex-col", "gap-4", wrapperClassName)}>
-      <div className="flex items-center relative gap-2">
-        <div className="bg-background z-[2] pr-4">
+    <div className={cn('flex flex-col', 'gap-4', wrapperClassName)}>
+      <div className='flex items-center relative gap-2'>
+        <div className='bg-background z-[2] pr-4'>
           <Breadcrumb />
         </div>
-        <Separator className={cn("absolute", "left-0", "right-0", "z-[1]")} />
+        <Separator className={cn('absolute', 'left-0', 'right-0', 'z-[1]')} />
       </div>
       <div
         className={cn(
-          "flex",
-          "gap-1",
-          "items-center",
-          "justify-between",
-          "-ml-2.5",
-          headerClassName
+          'flex',
+          'gap-1',
+          'items-center',
+          'justify-between',
+          '-ml-2.5',
+          headerClassName,
         )}
       >
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" onClick={back}>
-            <ArrowLeftIcon className="h-4 w-4" />
+        <div className='flex items-center gap-1'>
+          <Button variant='ghost' size='icon' onClick={back}>
+            <ArrowLeftIcon className='h-4 w-4' />
           </Button>
-          <h2 className="text-2xl font-bold">{title}</h2>
+          <h2 className='text-2xl font-bold'>{title}</h2>
         </div>
 
-        <div className="flex items-center gap-2">
-          <RefreshButton
-            variant="outline"
-            recordItemId={recordItemId}
-            resource={resourceName}
-          />
-          <EditButton
-            variant="outline"
-            recordItemId={recordItemId}
-            resource={resourceName}
-          />
+        <div className='flex items-center gap-2'>
+          <RefreshButton variant='outline' recordItemId={recordItemId} resource={resourceName} />
+          <EditButton variant='outline' recordItemId={recordItemId} resource={resourceName} />
         </div>
       </div>
     </div>
   );
 };
 
-ShowView.displayName = "ShowView";
+ShowView.displayName = 'ShowView';

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Breadcrumb as ShadcnBreadcrumb,
@@ -6,21 +6,16 @@ import {
   BreadcrumbList as ShadcnBreadcrumbList,
   BreadcrumbPage as ShadcnBreadcrumbPage,
   BreadcrumbSeparator as ShadcnBreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
-  matchResourceFromRoute,
-  useBreadcrumb,
-  useLink,
-  useResourceParams,
-} from "@refinedev/core";
-import { Home } from "lucide-react";
-import { Fragment, useMemo } from "react";
+} from '@/components/ui/breadcrumb';
+import { matchResourceFromRoute, useBreadcrumb, useLink, useResourceParams } from '@refinedev/core';
+import { Home } from 'lucide-react';
+import { Fragment, useMemo } from 'react';
 
 export function Breadcrumb() {
   const Link = useLink();
   const { breadcrumbs } = useBreadcrumb();
   const { resources } = useResourceParams();
-  const rootRouteResource = matchResourceFromRoute("/", resources);
+  const rootRouteResource = matchResourceFromRoute('/', resources);
 
   const breadCrumbItems = useMemo(() => {
     const list: {
@@ -30,13 +25,11 @@ export function Breadcrumb() {
     }[] = [];
 
     list.push({
-      key: "breadcrumb-item-home",
-      href: rootRouteResource.matchedRoute ?? "/",
+      key: 'breadcrumb-item-home',
+      href: rootRouteResource.matchedRoute ?? '/',
       Component: (
-        <Link to={rootRouteResource.matchedRoute ?? "/"}>
-          {rootRouteResource?.resource?.meta?.icon ?? (
-            <Home className="h-4 w-4" />
-          )}
+        <Link to={rootRouteResource.matchedRoute ?? '/'}>
+          {rootRouteResource?.resource?.meta?.icon ?? <Home className='h-4 w-4' />}
         </Link>
       ),
     });
@@ -44,7 +37,7 @@ export function Breadcrumb() {
     for (const { label, href } of breadcrumbs) {
       list.push({
         key: `breadcrumb-item-${label}`,
-        href: href ?? "",
+        href: href ?? '',
         Component: href ? <Link to={href}>{label}</Link> : <span>{label}</span>,
       });
     }
@@ -57,18 +50,12 @@ export function Breadcrumb() {
       <ShadcnBreadcrumbList>
         {breadCrumbItems.map((item, index) => {
           if (index === breadCrumbItems.length - 1) {
-            return (
-              <ShadcnBreadcrumbPage key={item.key}>
-                {item.Component}
-              </ShadcnBreadcrumbPage>
-            );
+            return <ShadcnBreadcrumbPage key={item.key}>{item.Component}</ShadcnBreadcrumbPage>;
           }
 
           return (
             <Fragment key={item.key}>
-              <ShadcnBreadcrumbItem key={item.key}>
-                {item.Component}
-              </ShadcnBreadcrumbItem>
+              <ShadcnBreadcrumbItem key={item.key}>{item.Component}</ShadcnBreadcrumbItem>
               <ShadcnBreadcrumbSeparator />
             </Fragment>
           );
@@ -78,4 +65,4 @@ export function Breadcrumb() {
   );
 }
 
-Breadcrumb.displayName = "Breadcrumb";
+Breadcrumb.displayName = 'Breadcrumb';

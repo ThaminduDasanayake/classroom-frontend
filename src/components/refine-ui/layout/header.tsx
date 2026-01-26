@@ -1,19 +1,15 @@
-import { UserAvatar } from "@/components/refine-ui/layout/user-avatar";
-import { ThemeToggle } from "@/components/refine-ui/theme/theme-toggle";
+import { UserAvatar } from '@/components/refine-ui/layout/user-avatar';
+import { ThemeToggle } from '@/components/refine-ui/theme/theme-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-import {
-  useActiveAuthProvider,
-  useLogout,
-  useRefineOptions,
-} from "@refinedev/core";
-import { LogOutIcon } from "lucide-react";
+} from '@/components/ui/dropdown-menu';
+import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import { useActiveAuthProvider, useLogout, useRefineOptions } from '@refinedev/core';
+import { LogOutIcon } from 'lucide-react';
 
 export const Header = () => {
   const { isMobile } = useSidebar();
@@ -25,19 +21,19 @@ function DesktopHeader() {
   return (
     <header
       className={cn(
-        "sticky",
-        "top-0",
-        "flex",
-        "h-16",
-        "shrink-0",
-        "items-center",
-        "gap-4",
-        "border-b",
-        "border-border",
-        "bg-sidebar",
-        "pr-3",
-        "justify-end",
-        "z-40"
+        'sticky',
+        'top-0',
+        'flex',
+        'h-16',
+        'shrink-0',
+        'items-center',
+        'gap-4',
+        'border-b',
+        'border-border',
+        'bg-sidebar',
+        'pr-3',
+        'justify-end',
+        'z-40',
       )}
     >
       <ThemeToggle />
@@ -54,65 +50,59 @@ function MobileHeader() {
   return (
     <header
       className={cn(
-        "sticky",
-        "top-0",
-        "flex",
-        "h-12",
-        "shrink-0",
-        "items-center",
-        "gap-2",
-        "border-b",
-        "border-border",
-        "bg-sidebar",
-        "pr-3",
-        "justify-between",
-        "z-40"
+        'sticky',
+        'top-0',
+        'flex',
+        'h-12',
+        'shrink-0',
+        'items-center',
+        'gap-2',
+        'border-b',
+        'border-border',
+        'bg-sidebar',
+        'pr-3',
+        'justify-between',
+        'z-40',
       )}
     >
       <SidebarTrigger
-        className={cn("text-muted-foreground", "rotate-180", "ml-1", {
-          "opacity-0": open,
-          "opacity-100": !open || isMobile,
-          "pointer-events-auto": !open || isMobile,
-          "pointer-events-none": open && !isMobile,
+        className={cn('text-muted-foreground', 'rotate-180', 'ml-1', {
+          'opacity-0': open,
+          'opacity-100': !open || isMobile,
+          'pointer-events-auto': !open || isMobile,
+          'pointer-events-none': open && !isMobile,
         })}
       />
 
       <div
         className={cn(
-          "whitespace-nowrap",
-          "flex",
-          "flex-row",
-          "h-full",
-          "items-center",
-          "justify-start",
-          "gap-2",
-          "transition-discrete",
-          "duration-200",
+          'whitespace-nowrap',
+          'flex',
+          'flex-row',
+          'h-full',
+          'items-center',
+          'justify-start',
+          'gap-2',
+          'transition-discrete',
+          'duration-200',
           {
-            "pl-3": !open,
-            "pl-5": open,
-          }
+            'pl-3': !open,
+            'pl-5': open,
+          },
         )}
       >
         <div>{title.icon}</div>
         <h2
-          className={cn(
-            "text-sm",
-            "font-bold",
-            "transition-opacity",
-            "duration-200",
-            {
-              "opacity-0": !open,
-              "opacity-100": open,
-            }
-          )}
+          className={cn('text-sm', 'font-bold', 'transition-opacity', 'duration-200', {
+            'opacity-0': !open,
+            'opacity-100': open,
+          })}
         >
           {title.text}
         </h2>
       </div>
 
-      <ThemeToggle className={cn("h-8", "w-8")} />
+      <ThemeToggle className={cn('h-8', 'w-8')} />
     </header>
   );
 }
@@ -131,17 +121,15 @@ const UserDropdown = () => {
       <DropdownMenuTrigger>
         <UserAvatar />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align='end'>
         <DropdownMenuItem
           onClick={() => {
             logout();
           }}
         >
-          <LogOutIcon
-            className={cn("text-destructive", "hover:text-destructive")}
-          />
-          <span className={cn("text-destructive", "hover:text-destructive")}>
-            {isLoggingOut ? "Logging out..." : "Logout"}
+          <LogOutIcon className={cn('text-destructive', 'hover:text-destructive')} />
+          <span className={cn('text-destructive', 'hover:text-destructive')}>
+            {isLoggingOut ? 'Logging out...' : 'Logout'}
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -149,6 +137,6 @@ const UserDropdown = () => {
   );
 };
 
-Header.displayName = "Header";
-MobileHeader.displayName = "MobileHeader";
-DesktopHeader.displayName = "DesktopHeader";
+Header.displayName = 'Header';
+MobileHeader.displayName = 'MobileHeader';
+DesktopHeader.displayName = 'DesktopHeader';
