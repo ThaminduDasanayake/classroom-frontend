@@ -27,6 +27,7 @@ import { Textarea } from '@/components/ui/textarea.tsx';
 import { Loader2 } from 'lucide-react';
 import UploadWidget from '@/components/upload-widget.tsx';
 import { useForm } from '@refinedev/react-hook-form';
+import { subjects, teachers } from '@/constants';
 
 const Create = () => {
   const back = useBack();
@@ -52,30 +53,6 @@ const Create = () => {
       console.error('Error creating class:', error);
     }
   };
-
-  const teachers = [
-    {
-      id: 1,
-      name: 'John Doe',
-    },
-    {
-      id: 2,
-      name: 'Jane Doe',
-    },
-  ];
-
-  const subjects = [
-    {
-      id: 1,
-      name: 'Math',
-      code: 'MATH',
-    },
-    {
-      id: 2,
-      name: 'English',
-      code: 'ENG',
-    },
-  ];
 
   const bannerPublicId = form.watch('bannerCldPubId');
 
@@ -229,7 +206,9 @@ const Create = () => {
                     name='capacity'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Capacity</FormLabel>
+                        <FormLabel>
+                          Capacity <span className='text-orange-600'>*</span>
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type='number'
@@ -279,7 +258,9 @@ const Create = () => {
                   name='description'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>
+                        Description <span className='text-orange-600'>*</span>
+                      </FormLabel>
                       <FormControl>
                         <Textarea placeholder='Brief description about the class' {...field} />
                       </FormControl>
