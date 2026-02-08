@@ -1,7 +1,7 @@
 import { CreateView } from '@/components/refine-ui/views/create-view.tsx';
 import { Breadcrumb } from '@/components/refine-ui/layout/breadcrumb.tsx';
 import { Button } from '@/components/ui/button.tsx';
-import { useBack } from '@refinedev/core';
+import { useBack, useList } from '@refinedev/core';
 import { Separator } from '@/components/ui/separator.tsx';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,7 +27,7 @@ import { Textarea } from '@/components/ui/textarea.tsx';
 import { Loader2 } from 'lucide-react';
 import UploadWidget from '@/components/upload-widget.tsx';
 import { useForm } from '@refinedev/react-hook-form';
-import { subjects, teachers } from '@/constants';
+import { Subject, User } from '@/types';
 
 const Create = () => {
   const back = useBack();
@@ -41,6 +41,7 @@ const Create = () => {
   });
 
   const {
+    refineCore: { onFinish },
     handleSubmit,
     formState: { isSubmitting, errors },
     control,
@@ -48,11 +49,32 @@ const Create = () => {
 
   const onSubmit = async (values: z.infer<typeof classSchema>) => {
     try {
-      console.log(values);
+      await onFinish(values);
     } catch (error) {
       console.error('Error creating class:', error);
     }
   };
+
+  const { query: subjectsQuery } = useList<Subject>({
+    resource: 'subjects',
+    pagination: {
+      pageSize: 100,
+    },
+  });
+
+  const { query: teachersQuery } = useList<User>({
+    resource: 'teachers',
+    filters: [{ field: 'role', operator: 'eq', value: 'teacher' }],
+    pagination: {
+      pageSize: 100,
+    },
+  });
+
+  const subjects = subjectsQuery?.data?.data || [];
+  const subjectsLoading = subjectsQuery.isLoading;
+
+  const teachers = teachersQuery?.data?.data || [];
+  const teachersLoading = teachersQuery.isLoading;
 
   const bannerPublicId = form.watch('bannerCldPubId');
 
@@ -153,6 +175,7 @@ const Create = () => {
                         <Select
                           onValueChange={(value) => field.onChange(Number(value))}
                           value={field.value?.toString()}
+                          disabled={subjectsLoading}
                         >
                           <FormControl>
                             <SelectTrigger className='w-full'>
@@ -180,7 +203,11 @@ const Create = () => {
                         <FormLabel>
                           Teacher <span className='text-orange-600'>*</span>
                         </FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          disabled={teachersLoading}
+                        >
                           <FormControl>
                             <SelectTrigger className='w-full'>
                               <SelectValue placeholder='Select a teacher' />
