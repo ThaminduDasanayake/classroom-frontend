@@ -26,11 +26,17 @@ const options: CreateDataProviderOptions = {
   getList: {
     getEndpoint: ({ resource }) => resource,
 
-    buildQueryParams: async ({ resource, pagination, filters }) => {
+    buildQueryParams: async ({ resource, pagination, filters, sorters }) => {
       const page = pagination?.currentPage ?? 1;
       const pageSize = pagination?.pageSize ?? 10;
 
       const params: Record<string, string | number> = { page, limit: pageSize };
+
+      if (sorters && sorters.length > 0) {
+        const sort = sorters[0];
+        params._sort = sort.field;
+        params._order = sort.order;
+      }
 
       filters?.forEach((filter) => {
         const field = 'field' in filter ? filter.field : '';
@@ -40,6 +46,12 @@ const options: CreateDataProviderOptions = {
         if (resource === 'subjects') {
           if (field === 'department') params.department = value;
           if (field === 'name' || field === 'code') params.search = value;
+        }
+
+        if (resource === 'classes') {
+          if (field === 'name') params.search = value;
+          if (field === 'subject') params.subject = value;
+          if (field === 'teacher') params.teacher = value;
         }
       });
 

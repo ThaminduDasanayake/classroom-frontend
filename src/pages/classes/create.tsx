@@ -57,13 +57,14 @@ const Create = () => {
 
   const { query: subjectsQuery } = useList<Subject>({
     resource: 'subjects',
+    sorters: [{ field: 'code', order: 'asc' }],
     pagination: {
       pageSize: 100,
     },
   });
 
   const { query: teachersQuery } = useList<User>({
-    resource: 'teachers',
+    resource: 'users',
     filters: [{ field: 'role', operator: 'eq', value: 'teacher' }],
     pagination: {
       pageSize: 100,
@@ -185,7 +186,7 @@ const Create = () => {
                           <SelectContent>
                             {subjects.map((subject) => (
                               <SelectItem key={subject.id} value={subject.id.toString()}>
-                                {subject.name} ({subject.code})
+                                {subject.code} - {subject.name}
                               </SelectItem>
                             ))}
                           </SelectContent>
