@@ -40,8 +40,21 @@ const options: CreateDataProviderOptions = {
 
       filters?.forEach((filter) => {
         const field = 'field' in filter ? filter.field : '';
-
         const value = String(filter.value);
+
+        if (field === 'role') {
+          params.role = value;
+        }
+
+        if (resource === 'departments') {
+          if (field === 'name' || field === 'code') params.search = value;
+        }
+
+        if (resource === 'users') {
+          if (field === 'search' || field === 'name' || field === 'email') {
+            params.search = value;
+          }
+        }
 
         if (resource === 'subjects') {
           if (field === 'department') params.department = value;
@@ -60,17 +73,13 @@ const options: CreateDataProviderOptions = {
 
     mapResponse: async (response) => {
       if (!response.ok) throw await buildHttpError(response);
-
-      const payload: ListResponse = await response.clone().json();
-
+      const payload: ListResponse = await response.json();
       return payload.data ?? [];
     },
 
     getTotalCount: async (response) => {
       if (!response.ok) throw await buildHttpError(response);
-
-      const payload: ListResponse = await response.clone().json();
-
+      const payload: ListResponse = await response.json();
       return payload.pagination?.total ?? payload.data?.length ?? 0;
     },
   },
@@ -82,7 +91,7 @@ const options: CreateDataProviderOptions = {
     mapResponse: async (response) => {
       const json: CreateResponse = await response.json();
 
-      return json.data ?? [];
+      return json.data ?? {};
     },
   },
   getOne: {
@@ -92,7 +101,6 @@ const options: CreateDataProviderOptions = {
       if (!response.ok) throw await buildHttpError(response);
 
       const json: GetOneResponse = await response.json();
-
       return json.data ?? {};
     },
   },

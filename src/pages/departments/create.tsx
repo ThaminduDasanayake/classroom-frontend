@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from '@refinedev/react-hook-form';
-import { useBack, useList, type BaseRecord, type HttpError } from '@refinedev/core';
+import { useBack, type BaseRecord, type HttpError } from '@refinedev/core';
 import * as z from 'zod';
 
 import { CreateView } from '@/components/refine-ui/views/create-view';
@@ -18,42 +18,27 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import type { Department } from '@/types';
 
-const subjectCreateSchema = z.object({
-  departmentId: z.coerce
-    .number({
-      required_error: 'Department is required',
-      invalid_type_error: 'Department is required',
-    })
-    .min(1, 'Department is required'),
-  name: z.string().min(3, 'Subject name must be at least 3 characters'),
-  code: z.string().min(3, 'Subject code must be at least 3 characters'),
-  description: z.string().min(5, 'Subject description must be at least 5 characters'),
+const departmentSchema = z.object({
+  code: z.string().min(2, 'Department code must be at least 2 characters'),
+  name: z.string().min(3, 'Department name must be at least 3 characters'),
+  description: z.string().min(5, 'Department description must be at least 5 characters'),
 });
 
-type SubjectFormValues = z.infer<typeof subjectCreateSchema>;
+type DepartmentFormValues = z.infer<typeof departmentSchema>;
 
-const SubjectsCreate = () => {
+const DepartmentsCreate = () => {
   const back = useBack();
 
-  const form = useForm<BaseRecord, HttpError, SubjectFormValues>({
-    resolver: zodResolver(subjectCreateSchema),
+  const form = useForm<BaseRecord, HttpError, DepartmentFormValues>({
+    resolver: zodResolver(departmentSchema),
     refineCoreProps: {
-      resource: 'subjects',
+      resource: 'departments',
       action: 'create',
     },
     defaultValues: {
-      departmentId: 0,
-      name: '',
       code: '',
+      name: '',
       description: '',
     },
   });
@@ -65,21 +50,11 @@ const SubjectsCreate = () => {
     control,
   } = form;
 
-  const { query: departmentsQuery } = useList<Department>({
-    resource: 'departments',
-    pagination: {
-      pageSize: 100,
-    },
-  });
-
-  const departments = departmentsQuery.data?.data ?? [];
-  const departmentsLoading = departmentsQuery.isLoading;
-
-  const onSubmit = async (values: SubjectFormValues) => {
+  const onSubmit = async (values: DepartmentFormValues) => {
     try {
       await onFinish(values);
     } catch (error) {
-      console.error('Error creating subject:', error);
+      console.error('Error creating department:', error);
     }
   };
 
@@ -87,9 +62,9 @@ const SubjectsCreate = () => {
     <CreateView className='class-view'>
       <Breadcrumb />
 
-      <h1 className='page-title'>Create a Subject</h1>
+      <h1 className='page-title'>Create a Department</h1>
       <div className='intro-row'>
-        <p>Provide the required information below to add a subject.</p>
+        <p>Provide the required information below to add a department.</p>
         <Button onClick={() => back()}>Go Back</Button>
       </div>
 
@@ -110,30 +85,15 @@ const SubjectsCreate = () => {
               <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
                 <FormField
                   control={control}
-                  name='departmentId'
+                  name='code'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Department <span className='text-orange-600'>*</span>
+                        Department Code <span className='text-orange-600'>*</span>
                       </FormLabel>
-                      <Select
-                        onValueChange={(value) => field.onChange(Number(value))}
-                        value={field.value ? String(field.value) : ''}
-                        disabled={departmentsLoading}
-                      >
-                        <FormControl>
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Select a department' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {departments.map((department) => (
-                            <SelectItem key={department.id} value={String(department.id)}>
-                              {department.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <FormControl>
+                        <Input placeholder='CS' {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -145,26 +105,10 @@ const SubjectsCreate = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Subject Name <span className='text-orange-600'>*</span>
+                        Department Name <span className='text-orange-600'>*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder='Intro to Programming' {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={control}
-                  name='code'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Subject Code <span className='text-orange-600'>*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder='CS101' {...field} />
+                        <Input placeholder='Computer Science' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -181,7 +125,7 @@ const SubjectsCreate = () => {
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder='Describe the subject focus...'
+                          placeholder='Describe the department focus...'
                           className='min-h-28'
                           {...field}
                         />
@@ -192,7 +136,7 @@ const SubjectsCreate = () => {
                 />
 
                 <Button type='submit' size='lg' disabled={isSubmitting}>
-                  {isSubmitting ? 'Creating...' : 'Create Subject'}
+                  {isSubmitting ? 'Creating...' : 'Create Department'}
                 </Button>
               </form>
             </Form>
@@ -203,4 +147,4 @@ const SubjectsCreate = () => {
   );
 };
 
-export default SubjectsCreate;
+export default DepartmentsCreate;
